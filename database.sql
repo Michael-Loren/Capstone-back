@@ -1,0 +1,5 @@
+CREATE DATABASE capstone;
+
+CREATE TABLE test(
+    column VARCHAR(255) NOT NULL
+);
