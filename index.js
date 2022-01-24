@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", require("./routes/login.js"));
-
+app.use("/", require("./routes/Register.js"));
 
 const port = 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`))

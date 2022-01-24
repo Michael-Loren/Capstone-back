@@ -4,7 +4,7 @@ const validInfo = require("../middleware/validInfo");
 const bcrypt = require("bcrypt");
 
 
-router.post('/Login',async(req,res)=>{
+router.post('/Login',validInfo,async(req,res)=>{
 
     try {
 
@@ -12,13 +12,23 @@ router.post('/Login',async(req,res)=>{
 
         const user = await pool.query('SELECT * FROM t_user WHERE u_email = $1',[u_email])
 
-        if(u_password !== user.rows[0].u_password)
+        //check user is in the db or not
+        if(user.rows.length === 0)
         {
-            return res.status(401).json("ERROR!! email or password is incorrect")
+            return res.status(401).json("user is undefined")
         }
 
+        // compare user input password to DB password
+        
+        const correctPassword = await bcrypt.compare(
+            u_password,
+            user.rows[0].u_password
+          );
 
         
+          if(!correctPassword){
+            return res.status(401).json("ERROR!! email or password is incorrect");
+          }
 
 
         res.json(user.rows[0])
@@ -27,7 +37,6 @@ router.post('/Login',async(req,res)=>{
     } catch (err) {
         return res.status(500).json(err.message)
     }
-
 
 })
 
