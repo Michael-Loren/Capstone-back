@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS t_user(
     u_name VARCHAR(12), 
     -- u_password VARCHAR(max), --I don't know what it should be stored as
     u_password VARCHAR(255), 
-    u_email VARCHAR(255)
+    u_email VARCHAR(255),
+    u_type VARCHAR(255)
 );
 
 
