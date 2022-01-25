@@ -18,8 +18,8 @@ router.get("/Food", async (req, res) => {
 router.get('/Food/:type',async (req,res)=>{
 
     try {
-        const type = req.params
-        const listOfFood = await pool.query("SELECT * FROM t_food WHERE t_type = $1",[type])
+      const {type} = req.params
+        const listOfFood = await pool.query("SELECT * FROM t_food WHERE f_category = $1",[type])
         res.json(listOfFood.rows)
     } catch (err) {
         res.status(500).json(err.message);
