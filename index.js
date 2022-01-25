@@ -14,5 +14,5 @@ app.use('/',require('./routes/listOfFood'))
 app.get("/", (req, res) => {
     res.send('Hello world');
 })
-const port = 5000;
+const port = 8000;
 app.listen(port, () => console.log(`Server started on port ${port}`))
