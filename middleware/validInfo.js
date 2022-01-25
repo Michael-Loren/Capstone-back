@@ -10,8 +10,7 @@ module.exports = (req, res, next) => {
   };
 
   const passwordValidation = (password) => {
-    // regex for password
-    // minimum 8 characters, at least one Uppercase letter, one number, one special character
+    // minimum 8 characters, at least one Uppercase letter and one number
     return password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/);
   };
 

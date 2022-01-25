@@ -9,7 +9,7 @@ app.use("/", require("./routes/login.js"));
 app.use("/", require("./routes/Register.js"));
 app.use("/profile", require("./routes/profile"));
 app.use("/", require("./routes/listOfFood"));
-
+app.use('/',require('./routes/shoppingCart'));
 const port = 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
 
