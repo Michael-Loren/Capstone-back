@@ -10,6 +10,9 @@ app.use("/", require("./routes/Register.js"));
 app.use("/profile", require("./routes/profile"));
 app.use("/", require("./routes/listOfFood"));
 
+const port = 5000;
+app.listen(port, () => console.log(`Server started on port ${port}`));
+
 /*
 const { Sequelize } = require("sequelize");
 
@@ -24,10 +27,9 @@ sequelize
   })
   .catch((err) => console.error(err.message));
 */
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
-const port = 8000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
-
+// app.get("/", (req, res) => {
+//   res.send("Hello world");
+// });
+// const port = 8000;
+// app.listen(port, () => console.log(`Server started on port ${port}`));
 
