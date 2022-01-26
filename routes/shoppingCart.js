@@ -81,4 +81,23 @@ router.delete("/shoppingCart/:f_id_fk", authorization, async (req, res) => {
   }
 });
 
+router.delete('/shoppingCart/checkout/',async (req,res)=>{
+
+
+  try {
+
+    const u_id_fk = req.user;
+    const deleteCart = await pool.query(
+      "DELETE FROM t_cart WHERE u_id_fk = $1",
+      [u_id_fk]
+
+    );
+    res.json("checkout!");
+  } catch (err) {
+    res.status(500).json(err.message)
+  }
+
+
+})
+
 module.exports = router;
