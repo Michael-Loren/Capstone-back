@@ -2,8 +2,8 @@ const router = require("express").Router();
 const pool = require("../db");
 const validInfo = require("../middleware/validInfo");
 const bcrypt = require("bcrypt");
-const Generator = require('../utils/Generator')
-const authorization = require('../middleware/authorization')
+const Generator = require("../utils/Generator");
+const authorization = require("../middleware/authorization");
 
 router.post("/Login", validInfo, async (req, res) => {
   try {
@@ -28,9 +28,10 @@ router.post("/Login", validInfo, async (req, res) => {
       return res.status(401).json("ERROR!! email or password is incorrect");
     }
 
+    const token = Generator(user.rows[0].u_id, user.rows[0].u_type);
+    
+    res.json({ token });
 
-    const token = Generator(user.rows[0].u_id,user.rows[0].u_type)
-    res.json({token});
 
   } catch (err) {
     return res.status(500).json(err.message);
@@ -40,11 +41,11 @@ router.post("/Login", validInfo, async (req, res) => {
 //return true if the token is real
 //this also can be use to check if the user is login or not
 router.get("/is-verify", authorization, async (req, res) => {
-    try {
-      res.json(true);
-    } catch (err) {
-      console.error(err.message);
-    }
-  });
+  try {
+    res.json(true);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 module.exports = router;
