@@ -29,7 +29,10 @@ router.post("/Login", validInfo, async (req, res) => {
     }
 
     const token = Generator(user.rows[0].u_id, user.rows[0].u_type);
+    
     res.json({ token });
+
+
   } catch (err) {
     return res.status(500).json(err.message);
   }
