@@ -37,6 +37,7 @@ router.get("/shoppingCart", async (req, res) => {
 });
 
 router.put("/shoppingCart/:f_id_fk", authorization, async (req, res) => {
+  
   const u_id_fk = req.user;
   const { f_id_fk } = req.params;
   const { f_qty } = req.body;
