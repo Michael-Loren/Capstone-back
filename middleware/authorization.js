@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
     }
 
     const payload = jwt.verify(token, process.env.Secret);
-
+//
     req.user = payload.user;
     req.type = payload.type;
     next();
