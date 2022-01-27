@@ -27,9 +27,10 @@ router.post("/shoppingCart", authorization, async (req, res) => {
   }
 });
 
-router.get("/shoppingCart", async (req, res) => {
+router.get("/shoppingCart", authorization, async (req, res) => {
   try {
-    const cart = await pool.query("SELECT * FROM t_cart");
+    const u_id_fk = req.user;
+    const cart = await pool.query("SELECT * FROM t_cart WHERE u_id_fk = $1",[u_id_fk]);
     res.json(cart.rows);
   } catch (err) {
     res.status(500).json(err.message);
