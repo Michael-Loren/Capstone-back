@@ -30,8 +30,12 @@ router.post("/shoppingCart", authorization, async (req, res) => {
 router.get("/shoppingCart", authorization, async (req, res) => {
   try {
     const u_id_fk = req.user;
-    const cart = await pool.query("SELECT * FROM t_cart WHERE u_id_fk = $1",[u_id_fk]);
-    res.json(cart.rows);
+    const cart = await pool.query("select t_cart.f_id_fk, t_food.f_name, t_food.f_price, t_cart.f_qty FROM t_cart INNER JOIN t_food ON t_cart.f_id_fk=t_food.f_id WHERE t_cart.u_id_fk = $1;",[u_id_fk]);
+
+  
+  
+    res.json(cart.rows)
+    
   } catch (err) {
     res.status(500).json(err.message);
   }
