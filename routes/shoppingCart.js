@@ -94,7 +94,6 @@ router.delete('/checkout',authorization,async (req,res)=>{
 
 
     const u_id_fk = req.user;
-    console.log(u_id_fk)
     const cartItem = await pool.query("SELECT * FROM t_cart WHERE u_id_fk = $1",[u_id_fk])
 
     
@@ -133,7 +132,25 @@ router.get('/orders',async(req,res)=>{
 
     const data = await pool.query("select * from t_orders");
     res.json(data.rows)
+
+  } catch (err) {
+    res.status(500).json(err.message)
+  }
+
+
+})
+
+router.put('/orders/:o_id',async(req,res)=>{
+
+  try {
+
+    const u_id_fk = req.user;
+    const o_id = req.params
+    const is_fufilled = req.body
+    const update = pool.query('UPDATE t_orders SET is_fufilled = $1 WHERE o_id = $2 AND u_id_fk = $3',[is_fufilled, o_id, u_id_fk])
+    res.json(`orders was updated!`);
     
+
   } catch (err) {
     res.status(500).json(err.message)
   }
