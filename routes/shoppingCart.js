@@ -82,18 +82,58 @@ router.delete("/shoppingCart/:f_id_fk", authorization, async (req, res) => {
   }
 });
 
-router.delete('/shoppingCart/checkout/',async (req,res)=>{
+router.delete('/checkout',authorization,async (req,res)=>{
 
 
   try {
 
-    const u_id_fk = req.user;
-    const deleteCart = await pool.query(
-      "DELETE FROM t_cart WHERE u_id_fk = $1",
-      [u_id_fk]
+    const time  = await pool.query("SELECT CURRENT_TIMESTAMP");
 
-    );
-    res.json("checkout!");
+
+ 
+
+
+    const u_id_fk = req.user;
+    console.log(u_id_fk)
+    const cartItem = await pool.query("SELECT * FROM t_cart WHERE u_id_fk = $1",[u_id_fk])
+
+    
+    
+    
+    const order = cartItem.rows.map(async (item)=>{
+      
+      const price = await pool.query('SELECT f_price FROM t_food WHERE f_id = $1',[item.f_id_fk])
+      let str = price.rows[0].f_price.substring(1) * item.f_qty
+      
+      const order = await pool.query("INSERT INTO t_orders (o_id, u_id_fk, f_id_fk, f_qty_fk, price) VALUES ($1, $2, $3 ,$4 ,$5) RETURNING *",
+      [time.rows[0].current_timestamp, u_id_fk, item.f_id_fk, item.f_qty,str])
+      return order;
+    })
+    
+    
+     const deleteCart = await pool.query(
+       "DELETE FROM t_cart WHERE u_id_fk = $1",
+       [u_id_fk]
+
+     );
+    
+    
+   console.log("DELETE ALL!!")
+
+    res.json(cartItem.rows);
+  } catch (err) {
+    res.status(500).json(err.message)
+  }
+
+
+})
+router.get('/orders',async(req,res)=>{
+
+  try {
+
+    const data = await pool.query("select * from t_orders");
+    res.json(data.rows)
+    
   } catch (err) {
     res.status(500).json(err.message)
   }

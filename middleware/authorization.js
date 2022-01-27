@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
 //
     req.user = payload.user;
     req.type = payload.type;
+    
     next();
   } catch (err) {
     return res.status(403).json(err.message);

@@ -73,6 +73,9 @@ CREATE TABLE IF NOT EXISTS public.t_cart
     f_id_fk integer NOT NULL,
     u_id_fk integer NOT NULL,
     f_qty integer NOT NULL,
+    CONSTRAINT unique_f_id UNIQUE (f_id_fk),
+    CONSTRAINT unique_qty UNIQUE (f_qty),
+    CONSTRAINT unique_u_id UNIQUE (u_id_fk),
     CONSTRAINT t_order_f_id_fk_fkey FOREIGN KEY (f_id_fk)
         REFERENCES public.t_user (u_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -91,3 +94,35 @@ ALTER TABLE IF EXISTS public.t_cart
 COMMENT ON TABLE public.t_cart
     IS 'This table is volatile and is to be updated frequently by the API';
 
+
+-- Table: public.t_orders
+
+-- DROP TABLE IF EXISTS public.t_orders;
+
+CREATE TABLE IF NOT EXISTS public.t_orders
+(
+    o_id timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    u_id_fk integer NOT NULL,
+    f_id_fk integer NOT NULL,
+    f_qty_fk integer DEFAULT 1,
+    price money,
+    is_fufilled boolean DEFAULT false,
+    CONSTRAINT t_orders_pkey PRIMARY KEY (o_id),
+    CONSTRAINT f_id_fkey FOREIGN KEY (f_id_fk)
+        REFERENCES public.t_cart (f_id_fk) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT f_qty_fkey FOREIGN KEY (f_qty_fk)
+        REFERENCES public.t_cart (f_qty) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT u_id_fkey FOREIGN KEY (u_id_fk)
+        REFERENCES public.t_cart (u_id_fk) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_orders
+    OWNER to postgres;
