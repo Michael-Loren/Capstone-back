@@ -23,6 +23,7 @@ router.post("/shoppingCart", authorization, async (req, res) => {
     );
     res.json(cart.rows[0]);
   } catch (err) {
+    console.log(err.message)
     res.status(500).json(err.message);
   }
 });
